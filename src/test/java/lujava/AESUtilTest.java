@@ -1,12 +1,10 @@
 package lujava;
 
 import org.junit.Test;
-
 import static org.junit.Assert.*;
 
 
 public class AESUtilTest {
-
     @Test
     public void aesTest(){
         String strToEncrypt = "Hello World!";
