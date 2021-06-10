@@ -2,3 +2,6 @@
 
 ### FileUtil
     inputstream 输出本地文件方法
+
+### AESUtil
+    AES算法加密解密
