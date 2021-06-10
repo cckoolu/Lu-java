@@ -5,7 +5,7 @@ import java.io.IOException;
 import java.io.InputStream;
 
 @SuppressWarnings(value = "unused")
-public class FilUtil {
+public class FileUtil {
     /**
      * @param destination 保存文件位置
      * @param inputStream 文件输入流
