@@ -4,21 +4,21 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-
+@SuppressWarnings(value = "unused")
 public class TimeStampUtil {
     // 精确到毫秒
     // 获取当前时间戳
     public static long getTimeStamp(){
-        return (new Date().getTime());
+        return new Date().getTime();
     }
 
     // 精确到毫秒
     // 获取指定格式的时间戳
-    public static String getTimeStampFormat(String... timeStampFormat){
+    public static String getTimeStampFormat(String... defaultFormat){
         String format = "yyyy-MM-dd HH:mm:ss";
 
-        if (timeStampFormat.length > 0){
-            format = timeStampFormat[0];
+        if (defaultFormat.length > 0){
+            format = defaultFormat[0];
         }
 
         SimpleDateFormat df = new SimpleDateFormat(format);
