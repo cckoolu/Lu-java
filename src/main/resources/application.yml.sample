@@ -1,0 +1,8 @@
+logging:
+  level:
+    # TRACE < DEBUG < INFO < WARN < ERROR < FATAL
+    root: info
+    org.geeshow.api: trace
+  file:
+    # 指定日志存放位置
+    name: .log/HappyLog.log
