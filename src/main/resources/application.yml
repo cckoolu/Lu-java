@@ -1,6 +1,0 @@
-logging:
-  level:
-    root: info
-    org.geeshow.api: trace
-  file:
-    name: /home/lu/log/geeshow.log
