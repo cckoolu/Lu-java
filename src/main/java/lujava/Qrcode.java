@@ -92,10 +92,10 @@ public class Qrcode {
         File file = new File(filepath);
 
         // 图片缓冲
-        BufferedImage image = null;
+        BufferedImage image;
 
         // 二进制比特图
-        BinaryBitmap binaryBitmap = null;
+        BinaryBitmap binaryBitmap;
 
         // 二维码结果
         Result result = null;
