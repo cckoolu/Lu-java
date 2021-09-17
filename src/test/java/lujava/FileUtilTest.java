@@ -10,9 +10,10 @@ import java.nio.charset.StandardCharsets;
 public class FileUtilTest {
     @Test
     public void writeToLocal() throws IOException {
-        String filePath = "./target/text.txt";  //文件在target目录下
+        String filePath = "./target/text.txt";
         String content = "hello";
         InputStream inputStream = new ByteArrayInputStream(content.getBytes(StandardCharsets.UTF_8));
         FileUtil.writeToLocal(filePath,inputStream);
+        System.out.println("文件创建成功，请到target目录下查看");
     }
 }
