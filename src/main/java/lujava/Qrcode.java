@@ -9,6 +9,7 @@ import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
+import java.awt.geom.RoundRectangle2D;
 import java.awt.image.BufferedImage;
 import java.io.*;
 import java.nio.file.Path;
@@ -217,5 +218,134 @@ public class Qrcode {
 
         byte[] fileIo = out.toByteArray();
         return fileIo;
+    }
+
+    /**
+     * 生成二维码
+     * 二维码中内嵌图片logo
+     * @param content 二维码携带内容信息
+     * @param width 二维码宽/高
+     * @param picFormat 二维码图片格式
+     * @param logoImgPath 内嵌logo图片路径
+     * @param needCompress logo图片是否压缩
+     * @return 二维码字节数组
+     */
+
+
+    /**
+     * 生成二维码
+     * 二维码红带有logo图样
+     * 二维码下方带有备注信息
+     * 二维码的宽高受备注信息字体大小影响，这里没有抽取公共参数
+     * @throws WriterException
+     * @throws IOException
+     */
+    public static void generateQRcodeLogoRemark(String content,int width,int height) throws WriterException, IOException {
+
+        // 设置二维码纠错信息
+        HashMap<EncodeHintType, Object> hints = new HashMap<EncodeHintType, Object>();
+        hints.put(EncodeHintType.CHARACTER_SET, "utf-8");
+        hints.put(EncodeHintType.ERROR_CORRECTION, ErrorCorrectionLevel.H);
+
+        // 因为有备注信息
+        // 这里不要设置二维码边距，否则二维码和备注信息之间会有明显间隔
+        hints.put(EncodeHintType.MARGIN, 1);
+
+        // 定义二维码位图矩阵
+        BitMatrix bt = new MultiFormatWriter().encode(content, BarcodeFormat.QR_CODE, 300, 300,
+                hints);
+
+        // 定义二维码图片，并将位图矩阵点渲染到二维码图片上
+        BufferedImage btImage = new BufferedImage(300, 300, BufferedImage.TYPE_INT_RGB);
+        for (int x = 0; x < 300; x++) {
+            for (int y = 0; y < 300; y++) {
+                btImage.setRGB(x, y, bt.get(x, y) ? 0xFF000000 : 0xFFFFFFFF);
+            }
+        }
+
+        // 读取logo图片，并判断logo图片的宽高必须相等
+        String logoImgPath = "./image/img.png";
+        Image logoImg = ImageIO.read(new File(logoImgPath));
+        int logoWidth = logoImg.getWidth(null);
+        int logoHeight = logoImg.getHeight(null);
+        if (logoWidth != logoHeight) {
+            return ;
+        }
+
+        // 对logo图片实施压缩
+        // 若logo图片宽高大于二维码宽高，必须对logo图片进行压缩
+        // 否则，过大的照片会撑爆二维码，生成的二维码只能看到部分的logo图片信息
+        if (logoWidth > width && logoHeight > height) {
+            logoWidth = width;
+            logoHeight = height;
+        }
+
+        // 创建缩微版本的logo图片
+        Image image = logoImg.getScaledInstance(logoWidth, logoHeight,
+                Image.SCALE_SMOOTH);
+        BufferedImage tag = new BufferedImage(logoWidth, logoHeight,
+                BufferedImage.TYPE_INT_RGB);
+
+        // 绘制缩微版logo图片，并将新的logo图片赋给原logo图片变量
+        Graphics logoGraphics = tag.getGraphics();
+        logoGraphics.drawImage(image, 0, 0, null);
+        logoGraphics.dispose();
+        logoImg = image;
+
+        // 在原二维码中计算位置，插入新的logo图片
+        Graphics2D graph = btImage.createGraphics();
+        int x = (width - logoWidth) / 2;
+        int y = (height - logoHeight) / 2;
+        graph.drawImage(logoImg, x, y, logoWidth, logoWidth, null);
+        Shape shape = new RoundRectangle2D.Float(x, y, logoWidth, logoWidth, 6, 6);
+        graph.setStroke(new BasicStroke(3f));
+        graph.draw(shape);
+        graph.dispose();
+
+        // 建立画布并设置背景色，一般设置为白色
+        // 将二维码信息和备注信息均渲染在该画布上，作为最终的输出
+        BufferedImage logoReamarkImage = new BufferedImage(300, 300, BufferedImage.TYPE_INT_RGB);
+        Graphics graphics = logoReamarkImage.getGraphics();
+        graphics.setColor(Color.WHITE);
+        graphics.fillRect(0, 0, 300, 300);
+        graphics.dispose();
+
+        // 将生成的二维码转化为像素数组，并将数组写到画布logoReamarkImage上
+        int[] imageNewArray = new int[300 * 300];
+        imageNewArray = btImage.getRGB(0, 0, 300, 300, imageNewArray, 0, 300);
+        logoReamarkImage.setRGB(0, 0, 300, 300, imageNewArray, 0, 300);
+
+        // 写备注信息
+//        Graphics gText = logoReamarkImage.createGraphics();
+//        gText.setColor(Color.black);
+//        gText.setFont(new Font(null, Font.PLAIN, 18));
+//        gText.drawString("二维码备注信息", 80, 320);
+//        gText.dispose();
+
+        // 定义输出流，将二维缓存图片写到指定输出流
+        // 将最终生成的二维码写到本地
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
+        ImageIO.write(logoReamarkImage, "jpg", out);
+
+        String path = "./" + File.separator + "image" + File.separator ;
+        File pathDir = new File(path);
+        if (!pathDir.exists()) {
+            pathDir.mkdirs();
+        }
+
+        File pathFile = new File(path + File.separator + "abc.jpg");
+        byte[] fileIo = out.toByteArray();
+        try {
+            OutputStream os = new FileOutputStream(pathFile);
+            os.write(fileIo);
+            os.flush();
+            os.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void main(String[] args) throws IOException, WriterException {
+        generateQRcodeLogoRemark("https://github.com/cckoolu/Lu-java",300,300);
     }
 }
