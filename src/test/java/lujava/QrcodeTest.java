@@ -1,11 +1,9 @@
 package lujava;
 
+import com.google.zxing.WriterException;
 import org.junit.Test;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.OutputStream;
+import java.io.*;
 
 public class QrcodeTest {
     @Test
@@ -15,11 +13,11 @@ public class QrcodeTest {
         final int width = 300;
         final int height = 300;
         final String fileDir = "./target/";
-        final String picName = "testQRCodePic";
+        final String picName = "testQRCode";
         final String picFormat = "png";
 
         Qrcode.createQRCode(content, width, height, fileDir, picName, picFormat);
-        System.out.println("二维码生成成功，请到target目录下查看");
+        System.out.println("createQRCode    二维码生成成功，请到target目录下查看");
     }
 
     @Test
@@ -47,14 +45,47 @@ public class QrcodeTest {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        System.out.println("二维码生成成功，请到target目录下查看");
+        System.out.println("createQRCodeByte    二维码生成成功，请到target目录下查看");
+    }
+
+    @Test
+    public void createQRCodeRemark() throws IOException, WriterException {
+        final String content = "https://github.com/cckoolu/Lu-java";
+        final String remark = "二维码备注";
+        final String path = "./target";
+        final String picName = "testQRCodeRemark";
+
+        Qrcode.createQRCodeRemark(content, remark, path, picName);
+        System.out.println("createQRCodeRemark  二维码生成成功，请到target目录下查看");
+    }
+
+    @Test
+    public void createQRCodeRemarkByte() throws IOException, WriterException {
+        final String content = "https://github.com/cckoolu/Lu-java";
+        final String remark = "二维码备注";
+        final String path = "./target";
+        final String picName = "testQRCodeRemarkByte";
+
+        final String pathFile = path + File.separator + picName + ".jpg";
+
+        byte[] fileIo = Qrcode.createQRCodeRemarkByte(content, remark, path, picName);
+        try {
+            OutputStream os = new FileOutputStream(pathFile);
+            os.write(fileIo);
+            os.flush();
+            os.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        System.out.println("createQRCodeRemarkByte  二维码生成成功，请到target目录下查看");
     }
 
     @Test
     public void readQRCode() {
-        String filepath = "." + File.separator + "target" + File.separator + "testQrcodeByte.jpg";
+        String filepath = "." + File.separator + "target" + File.separator + "testQRCodeRemark.jpg";
 
         String content = Qrcode.readQRCode(filepath);
         System.out.println(content);
     }
+
 }
