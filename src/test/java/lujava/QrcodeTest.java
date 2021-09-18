@@ -68,7 +68,7 @@ public class QrcodeTest {
 
         final String pathFile = path + File.separator + picName + ".jpg";
 
-        byte[] fileIo = Qrcode.createQRCodeRemarkByte(content, remark, path, picName);
+        byte[] fileIo = Qrcode.createQRCodeRemarkByte(content, remark);
         try {
             OutputStream os = new FileOutputStream(pathFile);
             os.write(fileIo);
@@ -81,11 +81,85 @@ public class QrcodeTest {
     }
 
     @Test
-    public void readQRCode() {
-        String filepath = "." + File.separator + "target" + File.separator + "testQRCodeRemark.jpg";
+    public void generateQRCodeLogo() throws IOException, WriterException {
+        final String content = "https://github.com/cckoolu/Lu-java";
+        final String logoPath = "src/test/logoImage/logo.jpg";
+        final String path = "./target";
+        final String picName = "testGenerateQRCodeLogo";
 
-        String content = Qrcode.readQRCode(filepath);
-        System.out.println(content);
+       Qrcode.generateQRCodeLogo(content, logoPath, path ,picName);
+
+        System.out.println("generateQRCodeLogo  二维码生成成功，请到target目录下查看");
+    }
+
+    @Test
+    public void generateQRCodeLogoByte() throws IOException, WriterException {
+        final String content = "https://github.com/cckoolu/Lu-java";
+        final String logoPath = "src/test/logoImage/logo.jpg";
+        final String path = "./target";
+        final String picName = "testGenerateQRCodeLogoByte";
+
+        final String pathFile = path + File.separator + picName + ".jpg";
+
+        byte[] fileIo = Qrcode.generateQRCodeLogoByte(content, logoPath);
+
+        try {
+            OutputStream os = new FileOutputStream(pathFile);
+            os.write(fileIo);
+            os.flush();
+            os.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        System.out.println("generateQRCodeLogoByte  二维码生成成功，请到target目录下查看");
+    }
+
+    @Test
+    public void generateQRCodeLogoRemark() throws IOException, WriterException {
+        final String content = "https://github.com/cckoolu/Lu-java";
+        final String remark = "二维码信息";
+        final String logoPath = "src/test/logoImage/logo.jpg";
+        final String path = "./target";
+        final String picName = "testGenerateQRCodeLogoRemark";
+
+        Qrcode.generateQRCodeLogoRemark(content,remark, logoPath, path ,picName);
+
+        System.out.println("generateQRCodeLogoRemark  二维码生成成功，请到target目录下查看");
+    }
+
+    @Test
+    public void generateQRCodeLogoRemarkByte() throws IOException, WriterException {
+        final String content = "https://github.com/cckoolu/Lu-java";
+        final String remark = "二维码信息";
+        final String logoPath = "src/test/logoImage/logo.jpg";
+
+        final String path = "./target";
+        final String picName = "testGenerateQRCodeLogoRemarkByte";
+
+        final String pathFile = path + File.separator + picName + ".jpg";
+
+        byte[] fileIo = Qrcode.generateQRCodeLogoRemarkByte(content, remark,logoPath);
+
+        try {
+            OutputStream os = new FileOutputStream(pathFile);
+            os.write(fileIo);
+            os.flush();
+            os.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        System.out.println("generateQRCodeLogoRemarkByte  二维码生成成功，请到target目录下查看");
+    }
+
+    @Test
+    public void readQRCode() {
+
+            String filepath = "." + File.separator + "target" + File.separator + "testQRCodeRemark.jpg";
+
+            String content = Qrcode.readQRCode(filepath);
+            System.out.println(content);
+
+
     }
 
 }
