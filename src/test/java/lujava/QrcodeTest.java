@@ -83,7 +83,7 @@ public class QrcodeTest {
     @Test
     public void generateQRCodeLogo() throws IOException, WriterException {
         final String content = "https://github.com/cckoolu/Lu-java";
-        final String logoPath = "src/test/logoImage/logo.jpg";
+        final String logoPath = "src/test/localFile/logo.jpg";
         final String path = "./target";
         final String picName = "testGenerateQRCodeLogo";
 
@@ -95,7 +95,7 @@ public class QrcodeTest {
     @Test
     public void generateQRCodeLogoByte() throws IOException, WriterException {
         final String content = "https://github.com/cckoolu/Lu-java";
-        final String logoPath = "src/test/logoImage/logo.jpg";
+        final String logoPath = "src/test/localFile/logo.jpg";
         final String path = "./target";
         final String picName = "testGenerateQRCodeLogoByte";
 
@@ -118,7 +118,7 @@ public class QrcodeTest {
     public void generateQRCodeLogoRemark() throws IOException, WriterException {
         final String content = "https://github.com/cckoolu/Lu-java";
         final String remark = "二维码信息";
-        final String logoPath = "src/test/logoImage/logo.jpg";
+        final String logoPath = "src/test/localFile/logo.jpg";
         final String path = "./target";
         final String picName = "testGenerateQRCodeLogoRemark";
 
@@ -131,7 +131,7 @@ public class QrcodeTest {
     public void generateQRCodeLogoRemarkByte() throws IOException, WriterException {
         final String content = "https://github.com/cckoolu/Lu-java";
         final String remark = "二维码信息";
-        final String logoPath = "src/test/logoImage/logo.jpg";
+        final String logoPath = "src/test/localFile/logo.jpg";
 
         final String path = "./target";
         final String picName = "testGenerateQRCodeLogoRemarkByte";
